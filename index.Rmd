@@ -13,6 +13,8 @@ library(png)
 ### About
 The objective of this project is to have a closer look at the impact Coronavirus brought to people around the world by walking through some visualizations created from various datasets related to coronavirus. 
 
+All datasets used in this project are in this folder: https://drive.google.com/drive/folders/13-Smo-kyoISR-uidBKBNDNZo3h1LK3Ew?usp=sharing
+
 The datasets used for the visualizations are as follows:
 
 global.csv - This dataset contains worldwide data of confirmed cases and deaths.
@@ -32,6 +34,7 @@ race.csv - This dataset contains the data of deaths and recovery from Covid-19 f
 flights_2020.csv - This dataset contains the fights traveled between cities during Covid-19. 
 
 covid19_tweets.csv - This dataset contains the tweets posted during Covid-19.
+
 
 
 ### Confirmed Cases of Covid-19 WorldWide
