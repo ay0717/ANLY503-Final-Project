@@ -167,3 +167,4 @@ rasterImage(pp,0,0,1,1)
 
 As many states enforced the stay at home policy, people become more active in social media platforms, for example, Twitter. Let's examine some tweets posted during Covid-19, some very noticeable words that caught our eyes easily are covid19, sanitizers, stop, smelleded, hand, scent, coronavirus, realdonaldtrump, and etc. It seems like many tweets are around the topics of Coronavirus and sanitization. As tremendous people are affected by Coronavirus, people do talk a lot about it on Twitter.
 
+In conclusion, Coronavirus is a tremendous disaster in the human history, and almost everyone in the world is affected in a way. We learned more about the virus from some visualizations created based on the datasets in various aspects. Let's pray that this pandemic will be over soon and no one will suffer from it anymore.
