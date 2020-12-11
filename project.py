@@ -1,41 +1,9 @@
----
-title: "Final Project"
-output: 
-  flexdashboard::flex_dashboard:
-    storyboard: true
----
+#!/usr/bin/env python
+# coding: utf-8
 
-```{r setup, include=FALSE}
-library(flexdashboard)
-library(png)
-```
+# In[1]:
 
-### About
-The objective of this project is to have a closer look at the impact Coronavirus brought to people around the world by walking through some visualizations created from various datasets related to coronavirus. 
 
-All datasets used in this project are in this folder: https://drive.google.com/drive/folders/13-Smo-kyoISR-uidBKBNDNZo3h1LK3Ew?usp=sharing
-
-The datasets used for the visualizations are as follows:
-
-global.csv - This dataset contains worldwide data of confirmed cases and deaths.
-
-covid_by_states.csv - This dataset contains total confirmed cases, confirmed cases in the last 7 days, total deaths, deaths in the last 7 days of eaach state in the United States up to early October. 
-
-United_States_COVID-19_Cases_and_Deaths_by_State_over_Time.csv - This dataset contains accumulated total confirmed cases, and accumulated total deaths every day from January to October of each state in the United States.
-
-us_covid19_daily_new.csv - This dataset contains the data of positive and negative Covid testing results each month. 
-
-age_group.csv - This dataset contains the number of confirmed cases, deaths, and recovery of various age groups. 
-
-gender.csv - This dataset contains the data of deaths and recovery from Covid-19 for female and male. 
-
-race.csv - This dataset contains the data of deaths and recovery from Covid-19 for different ethnicity. 
-
-flights_2020.csv - This dataset contains the fights traveled between cities during Covid-19. 
-
-covid19_tweets.csv - This dataset contains the tweets posted during Covid-19.
-
-```{python, eval=FALSE}
 import pandas as pd
 import plotly.express as px
 from matplotlib import pyplot as plt
@@ -50,9 +18,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
-```
 
-```{python, eval=FALSE}
+
+# In[2]:
+
+
+import os
+if not os.path.exists('./figs'):
+    os.makedirs('./figs')
+
+
+# 2020 has been a tough year to the entire world. Coronavirus has become a global tragedy in the history. Many people are affected in the disaster in many ways. Up to early October, Coronavirus has spread to 218 countries around the world, and there are 44,591,343 confirmed cases and 13,253,657 deaths of Covid-19 reported globally. Besides the tremendous number of people who suffered from Covid-19, many others are forced to stay at home. Let's walk through some visualizations created from a few Covid-19 datasets to have a closer look at this disaster from various aspects. To start off, let's see a treemap of confirmed cases of Covid-19 across continents. From this graph, we can easily tell see that Americas, Asia, Europe, and Africa all have been affected. Moreover, we are able to pinpoint the mostly affected countries in each continent by the area of each square. It's very visually straight forward that the bigger the square, the more reported cases in that country. For example, in Americas, the top countries that have the most cases reported are the United States, Brazil, Argentina, and so on. In Asia, the top countries are India, Iran, Iraq, and so on. In Europe, the top countries are Russia, France, Spain, and etc. 
+
+# In[43]:
+
+
 df = pd.read_csv('global.csv')
 df['continent'] = np.where((df.continent == 'North America'),'Americas',df.continent)
 df['continent'] = np.where((df.continent == 'South America'),'Americas',df.continent)
@@ -62,9 +42,11 @@ df["world"] = "world"
 df = df.dropna(axis=0)
 tree = df.sort_values(by=['continent', 'total_cases'], ascending=False)
 color_pallate = ["slateblue", 'lightsteelblue', 'thistle', 'lightpink', 'indianred'][::-1]
-```
 
-```{python, eval=FALSE}
+
+# In[ ]:
+
+
 
 fig = px.treemap(tree, path=['world', 'continent', 'location'], values='total_cases',
                   color='total_cases',
@@ -79,22 +61,13 @@ fig.update_layout(
         'font_size':18})
 fig.show()
 fig.write_image("figs/fig1.png")
-```
 
 
-### Confirmed Cases of Covid-19 WorldWide
+# Among all of the countries that are affected, the top five countries with the most reported cases of Covid-19 are the United States, India, Brazil, Russia, and France. Now, let's take a closer look at these five countries by observing the area chart that the growth of reported cases of Covid-19 from January to October in each of the five countries. The general trend is that the coruntries start to have reported cases in March and the numbers growly gradually until June. From June to September, the reported confirmed cases spiked up. 
 
-```{r}
-pp <- readPNG("figs/fig1.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# In[3]:
 
-***
 
-2020 has been a tough year to the entire world. Coronavirus has become a global tragedy in the history. Many people are affected in the disaster in many ways. Up to early October, Coronavirus has spread to 218 countries around the world, and there are 44,591,343 confirmed cases and 13,253,657 deaths of Covid-19 reported globally. Besides the tremendous number of people who suffered from Covid-19, many others are forced to stay at home. Let's walk through some visualizations created from a few Covid-19 datasets to have a closer look at this disaster from various aspects. To start off, let's see a treemap of confirmed cases of Covid-19 across continents. From this graph, we can easily tell see that Americas, Asia, Europe, and Africa all have been affected. Moreover, we are able to pinpoint the mostly affected countries in each continent by the area of each square. It's very visually straight forward that the bigger the square, the more reported cases in that country. For example, in Americas, the top countries that have the most cases reported are the United States, Brazil, Argentina, and so on. In Asia, the top countries are India, Iran, Iraq, and so on. In Europe, the top countries are Russia, France, Spain, and etc. 
-
-```{python, eval=FALSE}
 df = pd.read_csv('global.csv')
 
 def split_month(row):
@@ -137,22 +110,25 @@ fig.update_layout(
     yaxis_title="Population")
 fig.show()
 fig.write_image("figs/fig2.png")
-```
 
 
-### Top 5 Countries with Most Confirmed Cases
+# In[ ]:
 
-```{r}
-pp <- readPNG("figs/fig2.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
 
-***
 
-Among all of the countries that are affected, the top five countries with the most reported cases of Covid-19 are the United States, India, Brazil, Russia, and France. Now, let's take a closer look at these five countries by observing the area chart that the growth of reported cases of Covid-19 from January to October in each of the five countries. The general trend is that the coruntries start to have reported cases in March and the numbers growly gradually until June. From June to September, the reported confirmed cases spiked up. 
 
-```{python, eval=FALSE}
+
+# In[ ]:
+
+
+
+
+
+# Let's now focus on the top 1 country with the most reported confirmed cases, the United States. In October, there are 82,147,55 reported confirmed cases and 198,253 deaths of Covid-19 in the United States. From violin plots below, we get a clear visualization of the distribution of confirmed cases, deaths, confirmed cases in the last 7 days, deaths in the last 7 days reported by all the states. All four violin plots are highly skewed which align with the fact that some states are indeed more severly affected than others. 
+
+# In[81]:
+
+
 map_df = pd.read_csv('covid_by_state.csv')
 map_df = map_df.rename(columns={'Total_Cases': 'Total Cases'})
 states = list(map_df['State_Abb'])
@@ -228,22 +204,13 @@ fig.suptitle('Affected Populatinon In the U.S. During Covid-19', fontsize=20)
 
 plt.show()
 fig.savefig("figs/fig3.png")
-```
 
 
-### Affected Population in the U.S.
+# So which states suffer more from Covid-19? We are interested in the spread of Covid-19 across states in America. From the choropleth of confirmed cases within the U.S., we see that all states are affected, and it's very noticeable that California, Texas, Floria, New York, and Illinois have the most confirmed cases because these states are represented by deeper colors compared to the others. 
 
-```{r}
-pp <- readPNG("figs/fig3.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# In[31]:
 
-***
 
-Let's now focus on the top 1 country with the most reported confirmed cases, the United States. In October, there are 82,147,55 reported confirmed cases and 198,253 deaths of Covid-19 in the United States. From violin plots below, we get a clear visualization of the distribution of confirmed cases, deaths, confirmed cases in the last 7 days, deaths in the last 7 days reported by all the states. All four violin plots are highly skewed which align with the fact that some states are indeed more severly affected than others. 
-
-```{python, eval=FALSE}
 map_df = pd.read_csv('covid_by_state.csv')
 map_df = map_df.rename(columns={'Total_Cases': 'Total Cases'})
 states = list(map_df['State_Abb'])
@@ -264,22 +231,19 @@ fig.update_layout(
         'yanchor': 'top'})
 fig.show()
 fig.write_image("figs/fig4.png")
-```
 
 
-### Confirmed Cases in the U.S. by State
+# In[ ]:
 
-```{r}
-pp <- readPNG("figs/fig4.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
 
-***
 
-So which states suffer more from Covid-19? We are interested in the spread of Covid-19 across states in America. From the choropleth of confirmed cases within the U.S., we see that all states are affected, and it's very noticeable that California, Texas, Floria, New York, and Illinois have the most confirmed cases because these states are represented by deeper colors compared to the others. 
 
-```{python, eval=FALSE}
+
+# Let's focus on the top 10 states of the most confirmed cases, and they are California, Texas, Florida, New York, New Jersey, Arizona, Tennessee, Illinois, North Carolina, and Georgia. By observing the growth of confirmed cases in each of theses states from January to early october, the general trend is that the confirmed cases grow relatviely slow from January to May, and then the numbers start to increase rapidly from June. The growth the confirmed cases in the top 10 states are also consistent with the global trend we mentioned earlier. 
+
+# In[32]:
+
+
 df = pd.read_csv('United_States_COVID-19_Cases_and_Deaths_by_State_over_Time.csv')
 
 def split_month(row):
@@ -311,22 +275,19 @@ fig.update_layout(hovermode='x unified')
 fig.update_traces(line=dict(width=4))
 fig.show()
 fig.write_image("figs/fig5.png")
-```
 
 
-### Total Cases in Top 10 States
+# In[ ]:
 
-```{r}
-pp <- readPNG("figs/fig5.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
 
-***
 
-Let's focus on the top 10 states of the most confirmed cases, and they are California, Texas, Florida, New York, New Jersey, Arizona, Tennessee, Illinois, North Carolina, and Georgia. By observing the growth of confirmed cases in each of theses states from January to early october, the general trend is that the confirmed cases grow relatviely slow from January to May, and then the numbers start to increase rapidly from June. The growth the confirmed cases in the top 10 states are also consistent with the global trend we mentioned earlier. 
 
-```{python, eval=FALSE}
+
+# We care about fatality as well. From another choropleth of total deaths within the U.S., we see that California, Texas, Floria, New Jersey, New York, and Illinois have the most number of deaths because these states are represented by deeper colors compared to the others. 
+
+# In[33]:
+
+
 fig = px.choropleth(locations=states, locationmode="USA-states", color=death, scope="usa",
                    color_continuous_scale = "Blues",
                    labels={'locations': 'State', 'color': 'Total Deaths'})
@@ -339,22 +300,15 @@ fig.update_layout(
         'yanchor': 'top'})
 fig.show()
 fig.write_image("figs/fig6.png")
-```
 
 
-### Total Deaths in the U.S. by State
+# 
 
-```{r}
-pp <- readPNG("figs/fig6.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# We are able to pinpoint the top states with the most confirmed cases and deaths from the two choropleth maps, now let's have a more strightforward visualization to the top 10 states with the most confirmed cases reported and their reported deaths correspondingly. It brings to our attention that Arizona, New York, and New Jersey have the fewest confirmed cases among the top 10 states, however, New York and New Jersey have more deaths than even North Carolina and Tennessee, which reported more confirmed cases than these two states. This actually makes sense because some people recover more easily than others due to their health condition, immune system, and etc. For example, statistics show that elderly people have a higher fatality rate than young people when they have infection of Covid-19. So there are factors that could cause a state with less confirmed cases turn out having higher fatality. 
 
-***
+# In[86]:
 
-We care about fatality as well. From another choropleth of total deaths within the U.S., we see that California, Texas, Floria, New Jersey, New York, and Illinois have the most number of deaths because these states are represented by deeper colors compared to the others. 
 
-```{python, eval=FALSE}
 df = pd.read_csv('United_States_COVID-19_Cases_and_Deaths_by_State_over_Time.csv')
 
 def split_month(row):
@@ -411,22 +365,17 @@ fig.suptitle("Confirmed Cases and Death During Covid-19 for Top 10 States", font
 fig.subplots_adjust(top=0.85)
 plt.show()
 fig.savefig("figs/fig7.png")
-```
 
 
-### Confirmed Cases and Death for Top 10 States
+# 
 
-```{r}
-pp <- readPNG("figs/fig7.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# The testing results of Covid-19 is also worth noticing. Data shows that there is no testing results reported prior to March. In fact, the first patient who was diagnosed of infection with this virus was reported in January 20th, 2020, and since then the virus starts to spread. From the histogram, there are some reported testing results in March and April, but not too many, which aligns to the fact that the there were only sufficient Covid-19 test kits and teste centers for a limited number of people, and it took a while for the results to be reported. As the pandemic worsens rapidly, more reources such as testing kits, testing centers, medications, medical appliances, and etc are provided to
+# people against Covid-19. That's why we see in the plot, the peak occurs in July and August, when more people are concerned about the virus, more resources become available, and the testing results are reported more quickly. In addition, the most number of positive tetsing results are reported in July and August which again confirms with the fact and aligns with the visualization we saw earlier where the reported confirmed cases in the U.S. spiked in July.
+# 
 
-***
+# In[54]:
 
-We are able to pinpoint the top states with the most confirmed cases and deaths from the two choropleth maps, now let's have a more strightforward visualization to the top 10 states with the most confirmed cases reported and their reported deaths correspondingly. It brings to our attention that Arizona, New York, and New Jersey have the fewest confirmed cases among the top 10 states, however, New York and New Jersey have more deaths than even North Carolina and Tennessee, which reported more confirmed cases than these two states. This actually makes sense because some people recover more easily than others due to their health condition, immune system, and etc. For example, statistics show that elderly people have a higher fatality rate than young people when they have infection of Covid-19. So there are factors that could cause a state with less confirmed cases turn out having higher fatality. 
 
-```{python, eval=FALSE}
 df = pd.read_csv('us_covid19_daily_new.csv')
 df = df.rename(columns={'date': 'submission_date'})
 
@@ -460,23 +409,15 @@ plt.legend(handles=[pos, neg], loc='upper right', bbox_to_anchor=(1, 1), prop={'
 
 plt.show()
 fig.savefig("figs/fig8.png")
-```
 
 
-### Testing Results From March to September
+#  
 
-```{r}
-pp <- readPNG("figs/fig8.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# To digger further, let's break down the confirmed cases and fatality by groups. The first nested donut chart breaks down confirmed cases and fatality by age group. We see that among the four age groups, we see that nearly 68% of people infected with Covid-19 are in the age of 20-60, which makes sense because these people tend to go out more for example, to work and to do grocery, than people of other ages, hence they have a higher chance of getting infection. Only 20% of confirmed cases are from people of age 60+, however they have the largest number of deaths. The second donut chart breaks down deaths by gender, and we see more male died than female. Lastly, we have deaths broken down by race, and we see that 51.3% of patients with Covid-19 are White, followed by Hispanic or Latino. Again, the information we get from these donut charts tie back to the conclusion we made earlier that there are some factors that make some groups of people more easily infected by the virus and less likely to recover from the virus. 
 
-***
+# In[74]:
 
-The testing results of Covid-19 is also worth noticing. Data shows that there is no testing results reported prior to March. In fact, the first patient who was diagnosed of infection with this virus was reported in January 20th, 2020, and since then the virus starts to spread. From the histogram, there are some reported testing results in March and April, but not too many, which aligns to the fact that the there were only sufficient Covid-19 test kits and teste centers for a limited number of people, and it took a while for the results to be reported. As the pandemic worsens rapidly, more reources such as testing kits, testing centers, medications, medical appliances, and etc are provided to
-people against Covid-19. That's why we see in the plot, the peak occurs in July and August, when more people are concerned about the virus, more resources become available, and the testing results are reported more quickly. In addition, the most number of positive tetsing results are reported in July and August which again confirms with the fact and aligns with the visualization we saw earlier where the reported confirmed cases in the U.S. spiked in July.
 
-```{python, eval=FALSE}
 age = pd.read_csv('age_group.csv')
 age = age.drop([4])
 gender = pd.read_csv('gender.csv')
@@ -557,22 +498,21 @@ fig.tight_layout()
 
 plt.show()
 fig.savefig("figs/fig9.png")
-```
 
 
-### Deaths of Gender and Deaths of Ethinicity
+# 
 
-```{r}
-pp <- readPNG("figs/fig9.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# In[ ]:
 
-***
 
-To digger further, let's break down the confirmed cases and fatality by groups. The first donut chart breaks down deaths by gender, and we see more male died than female. Then, we have deaths broken down by race, and we see that 51.3% of patients with Covid-19 are White, followed by Hispanic or Latino. Again, the information we get from these donut charts tie back to the conclusion we made earlier that there are some factors that make some groups of people more easily infected by the virus and less likely to recover from the virus.
 
-```{python, eval=FALSE}
+
+
+# We are also interested in the travels during Covid-19. Let's see the top states people from California and Texas traveled to by observing the network plot. The blue lines represent the travels from Texas, and the pink lines represent the travels from California. The thicker a line, the more travels from the origin states. We see that most travels starting from Texas head to California, Florida, Corolado, and Arizona, since these three blue lines are the thickiest. From California, most travels are to Nevada, Arizona, and Washington. Among these destination states, California, Florida, and Arizona are also in the top 10 states with the most confirmed cases of Covid-19. A resonable assumption drawn from this visualization could be that some people were infected by the virus during their travels, and then they are tested positive at the destination state. 
+
+# In[51]:
+
+
 df = pd.read_csv('flights_2020.csv')[['ORIGIN_STATE_ABR', 'DEST_STATE_ABR']]
 
 ca = df[df['ORIGIN_STATE_ABR'] == 'CA']
@@ -631,22 +571,19 @@ nx.draw(G, pos,
        node_size = 1600,
        font_size=12)
 plt.savefig("figs/fig10.png")
-```
 
 
-### Top Air Travels from California and Texas
+# In[ ]:
 
-```{r}
-pp <- readPNG("figs/fig10.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
 
-***
 
-We are also interested in the travels during Covid-19. Let's see the top states people from California and Texas traveled to by observing the network plot. The blue lines represent the travels from Texas, and the pink lines represent the travels from California. The thicker a line, the more travels from the origin states. We see that most travels starting from Texas head to California, Florida, Corolado, and Arizona, since these three blue lines are the thickiest. From California, most travels are to Nevada, Arizona, and Washington. Among these destination states, California, Florida, and Arizona are also in the top 10 states with the most confirmed cases of Covid-19. A resonable assumption drawn from this visualization could be that some people were infected by the virus during their travels, and then they are tested positive at the destination state. 
 
-```{python, eval=FALSE}
+
+# As many states enforced the stay at home policy, people become more active in social media platforms, for example, Twitter. Let's examine some tweets posted during Covid-19, some very noticeable words that caught our eyes easily are covid19, sanitizers, stop, smelleded, hand, scent, coronavirus, realdonaldtrump, and etc. It seems like many tweets are around the topics of Coronavirus and sanitization. As tremendous people are affected by Coronavirus, people do talk a lot about it on Twitter.
+
+# In[57]:
+
+
 import nltk 
 from wordcloud import WordCloud
 import spacy
@@ -684,19 +621,103 @@ plt.imshow(wordcloud)
 plt.title("Tweets During Covid-19", fontsize=40)
 plt.show()
 fig.savefig("figs/fig11.png")
-```
 
 
-### Tweets
+# In conclusion, Coronavirus is a tremendous disaster in the human history, and almost everyone in the world is affected in a way. We learned more about the virus from some visualizations created based on the datasets in various aspects. Let's pray that this pandemic will be over soon and no one will suffer from it anymore. 
 
-```{r}
-pp <- readPNG("figs/fig11.png")
-plot.new() 
-rasterImage(pp,0,0,1,1)
-```
+# In[ ]:
 
-***
 
-As many states enforced the stay at home policy, people become more active in social media platforms, for example, Twitter. Let's examine some tweets posted during Covid-19, some very noticeable words that caught our eyes easily are covid19, sanitizers, stop, smelleded, hand, scent, coronavirus, realdonaldtrump, and etc. It seems like many tweets are around the topics of Coronavirus and sanitization. As tremendous people are affected by Coronavirus, people do talk a lot about it on Twitter.
 
-In conclusion, Coronavirus is a tremendous disaster in the human history, and almost everyone in the world is affected in a way. We learned more about the virus from some visualizations created based on the datasets in various aspects. Let's pray that this pandemic will be over soon and no one will suffer from it anymore.
+
+
+#  
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[60]:
+
+
+df = pd.read_csv('United_States_COVID-19_Cases_and_Deaths_by_State_over_Time.csv')
+
+def split_month(row):
+    month = int(row['submission_date'].split('/')[0])
+    return month
+def split_date(row):
+    date = int(row['submission_date'].split('/')[1])
+    return date
+df['month'] = df.apply(split_month, axis=1)
+df['date'] = df.apply(split_date, axis=1)
+df = df[['submission_date', 'month', 'date','state', 'tot_cases', 'tot_death']]
+tmp = df[(df['date']==10) | (df['date']==22) | (df['date']==30)]
+tmp = tmp[(tmp['state']=='CA') | (tmp['state']=='TX') | (tmp['state']=='FL') | (tmp['state']=='IL') | (tmp['state']=='GA')]
+
+
+pop = pd.read_csv('population.csv')
+tmp2 = pd.merge(map_df, pop, how ='left', left_on=['State'], right_on=['Location'])
+pop = tmp2[['Total Cases', 'Children 0-18', 'Adults 19-25', 'Adults 26-34', 'Adults 35-54', 'Adults 55-64', '65+']]
+pop['Children'] = pop['Children 0-18']
+pop['Adult'] = pop['Adults 19-25'] + pop['Adults 26-34'] + pop['Adults 35-54']
+pop['Elderly'] = pop['Adults 55-64'] + pop['65+']
+
+tot_list = list(pop['Total Cases']) * 3
+children_list = list(pop['Children'])
+adult_list = list(pop['Adult'])
+elderly_list = list(pop['Elderly'])
+pop_list = children_list + adult_list + elderly_list
+
+category = []
+for i in range(51):
+    category.append('Children')
+for i in range(51):
+    category.append('Adult')
+for i in range(51):
+    category.append('Elderly')
+    
+data = {'cases': tot_list, 'population': pop_list, 'category': category} 
+pop_vs_cases = pd.DataFrame(data) 
+
+fig, (ax1, ax2) = plt.subplots(ncols=2,figsize=(25, 10))
+
+sns.scatterplot(x="tot_cases", y="tot_death", data=tmp, hue='state', legend='brief', style='state',
+          palette=dict(CA='#BE83CE', TX='#82D3EB', FL='#ACC573', IL='#E59B12', GA='pink'),
+          s=100, ax=ax1)
+ax1.set_xlabel('Confirmed Cases', fontsize=14)
+ax1.set_ylabel('Deaths', fontsize=14)
+ax1.legend(loc='lower right', prop={'size': 16})
+ax1.set_title("Confirmed Cases Vs Death", fontsize=16)
+
+sns.scatterplot(x="population", y="cases", data=pop_vs_cases, hue='category', legend='brief', style='category',
+                palette=dict(Children='#BE83CE', Adult='#82D3EB', Elderly='#ACC573'),
+                s=100, ax=ax2)
+ax2.set_xlabel('Population in 10 Millions', fontsize=14)
+ax2.set_ylabel('Confimed Cases', fontsize=14)
+ax2.set_title('Relationship between Age and Confirmed Cases', fontsize=16)
+
+plt.legend(loc='lower right', prop={'size': 14})
+fig.suptitle("Relationships Between Confirmed Cases, Deaths, and Age", fontsize=20)
+fig.subplots_adjust(top=0.85)
+fig.savefig("figs/fig12.png")
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
